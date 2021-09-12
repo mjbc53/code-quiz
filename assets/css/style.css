@@ -1,4 +1,88 @@
-/* reset style on high score button */
+/* defaul page styling */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* default body styling */
+body{
+    margin: 0;
+    padding: 0;
+    font-size: 30px;
+    background: linear-gradient(to right, #00BFFF, #FFB6C1);
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* different button styles */
+.btn{
+    font-size: 1.2em;
+    background: #9932CC;
+    color: white;
+    width: 200px;
+    height: 40px;
+    border-radius: 10px;
+    border-color: #9932CC;
+    max-width: 200px;
+    text-align: left;
+    padding: 2px 5px 2px 5px;
+    align-self: flex-start;
+    margin-bottom: 5px;
+    font-size: 25px;
+}
+
+.start-btn{
+    font-size: 22px;
+    background: #9932CC;
+    color: white;
+    width: 150px;
+    height: 40px;
+    border-radius: 10px;
+    border-color: #9932CC;
+    text-align: center;
+}
+
+.btn-submit{
+    font-size: 18px;
+    background: #9932CC;
+    color: white;
+    border-radius: 5px;
+    border-color: #9932CC;
+    text-align: center;
+    padding: 0px 15px 0px 15px ;
+}
+
+.btn-go-back{
+    font-size: 20px;
+    background: #9932CC;
+    color: white;
+    border-radius: 5px;
+    border-color: #9932CC;
+    text-align: center;
+    padding: 0px 10px 0px 10px ;
+}
+
+.btn-clear-score{
+    font-size: 20px;
+    background: #9932CC;
+    color: white;
+    border-radius: 5px;
+    border-color: #9932CC;
+    text-align: center;
+    padding: 0px 10px 0px 10px ;
+}
+
+
+/* header style */
+.header{
+    font-size: 25px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 30px 0 20px;
+}
+
+/* reset style on high score button in header */
 header button, input[type="submit"], input[type="reset"]{
     background: none;
     color: inherit;
@@ -6,4 +90,95 @@ header button, input[type="submit"], input[type="reset"]{
     font: inherit;
     cursor: pointer;
     outline: inherit;
+}
+
+.header button{
+    color: #DC143C;
+}
+
+.header button:hover{
+    color: #FF1493;
+}
+
+/* content section style */
+.content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 75%;
+    padding-top: 10%;
+
+    
+}
+
+.content p{
+text-align: center;
+padding: 10px 0 10px 0 ;
+}
+
+
+/* question style */
+
+.question{
+    display: flex;
+    flex-flow: wrap column;
+    align-items: center;
+    width: 100%;
+    padding-top: 10%;
+}
+
+.question div{
+    display: flex;
+    flex-flow: wrap column;
+    align-items: center;
+    width: 50%;
+}
+.question h2{
+    font-size: 25px;
+}
+
+.question h3{
+    align-self: flex-start;
+    margin-top: 20px;
+    padding-top: 5px;
+    font-size: 25px;
+    border-top: 2px solid black;
+    width: 100%;
+}
+
+/* finished style */
+.finished{
+    display: flex;
+    flex-flow: wrap column;
+    align-items: center;
+    width: 100%;
+    padding-top: 10%;
+}
+
+/* high score style */
+
+.high-score{
+    display: flex;
+    flex-flow: wrap column;
+    align-items: center;
+    padding-top: 10%;
+}
+
+.high-score div{
+width: 40%;
+}
+
+.high-score h2{
+    font-size: 35px;
+    padding: 5px 0px 10px 0px;
+}
+
+.high-score ul{
+    list-style-type: none;
+}
+
+.high-score ul li{
+    background: grey;
+    margin-bottom: 5px;
 }
