@@ -172,10 +172,37 @@ var startQtns = function(){
 
     //append questions to page
     makeQuestion()
+    //call up id for answer button
     var answerBtn = document.querySelector('#btn-answer')
+    //call up id for false buttons
     var falseBtns = document.querySelectorAll('#false-btn')
+
     console.log(answerBtn)
     console.log(falseBtns)
+
+    //event listener for answerBtn
+    answerBtn.addEventListener('click',function(){
+        //call div to append to 
+        var div = document.querySelector("#div-question")
+        // make h3 element to append to bottom of section
+        var h3 = document.createElement('h3')
+        h3.textContent = 'Correct'
+        div.appendChild(h3)
+    })
+
+
+    for (var i = 0; i < falseBtns.length; i++){
+        falseBtns[i].addEventListener('click', function(){
+        //call div to append to 
+        var div = document.querySelector("#div-question")
+        // make h3 element to append to bottom of section
+        var h3 = document.createElement('h3')
+        h3.textContent = 'Wrong'
+        div.appendChild(h3)
+        })
+    }
+   
+    
 
 }
 
