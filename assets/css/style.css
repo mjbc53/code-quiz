@@ -44,13 +44,14 @@ body{
 }
 
 .btn-submit{
-    font-size: 18px;
+    font-size: 20px;
     background: #9932CC;
     color: white;
     border-radius: 5px;
     border-color: #9932CC;
     text-align: center;
-    padding: 0px 15px 0px 15px ;
+    padding: 5px 15px 5px 15px ;
+    margin-left:5px;
 }
 
 .btn-go-back{
@@ -71,6 +72,7 @@ body{
     border-color: #9932CC;
     text-align: center;
     padding: 0px 10px 0px 10px ;
+    margin-left: 5px;
 }
 
 
@@ -115,6 +117,7 @@ header button, input[type="submit"], input[type="reset"]{
 .content p{
 text-align: center;
 padding: 10px 0 10px 0 ;
+line-height: 1.5;
 }
 
 
@@ -154,6 +157,22 @@ padding: 10px 0 10px 0 ;
     align-items: center;
     width: 100%;
     padding-top: 10%;
+}
+
+.finished div{
+    width: 50%;
+}
+.finished h2{
+    padding-bottom: 5px;
+}
+
+.finished p {
+    padding-bottom: 5px ;
+}
+
+.finished input, .finished label{
+    padding: 10px 5px 10px 5px;
+    width: 50%;
 }
 
 /* high score style */
