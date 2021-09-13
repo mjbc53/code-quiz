@@ -1,35 +1,71 @@
-//calls body of page 
+//store body of page to append to
 var pageBody = document.querySelector('body')
 
+//place questions for values of questions
+var qtnHolder = ["javascript","console.log",".document","python","html","css"]
 
+//store content section of page
+var contentStn = document.querySelector('#content')
+console.log(contentStn)
+
+//store button from content section of page
+var contentBtn = document.querySelector('#start-btn')
 
 //time left on timer
 var timeLeft = 0
 
-var setSection 
-//section questions
-var sectionquestions
-//section finished
-var sectionFinished 
-//section high score
-var sectionHighScore
+//empty variable to make sections 
+var setStn 
 
-//make section with div function
+
+//function that makes a section with a div
 var makeSection = function(setClass,id){
     //make section element
-    setSection = document.createElement('section')
-    setSection.className = setClass
+    setStn = document.createElement('section')
+    setStn.className = setClass
 
     //make div to go in section to hold content
     var div = document.createElement('div')
     div.setAttribute("id",id)
-    setSection.appendChild(div)
-    
-
+    setStn.appendChild(div)
 }
 
 //function that makes the quiz question screen
-var makeQuestion
+var makeQuestion = function(){
+    //function to make this section
+    makeSection("question","div-question")
+
+    //store section
+    var sectionQuestion = setStn
+
+    //append section to page
+    pageBody.appendChild(sectionQuestion)
+
+    //find id div-question and store it
+    var div = document.querySelector("#div-question")
+
+    //make h2 element
+    var h2 = document.createElement('h2')
+    h2.textContent = "question"
+    div.appendChild(h2)
+
+    var btnanswer = document.createElement('button')
+    btnanswer.setAttribute('id','btn-answer')
+    btnanswer.className = 'btn'
+    btnanswer.textContent = "javascript"
+    div.appendChild(btnanswer)
+
+    // make other 3 place holder buttons
+    for (var i = 0; i < 3; i++){
+        var btn = document.createElement("button")
+        btn.setAttribute('id',"false-btn")
+        btn.className = 'btn'
+        btn.textContent = qtnHolder[Math.floor(Math.random() * qtnHolder.length)] 
+        div.appendChild(btn)
+    }
+
+
+}
 
 //function that makes the quiz high score screen
 var makeHighScore = function(){
@@ -37,7 +73,7 @@ var makeHighScore = function(){
     makeSection("high-score","div-high-score")
 
     //store Section
-    var sectionHighScore = setSection
+    var sectionHighScore = setStn
     
     //append section to page
     pageBody.appendChild(sectionHighScore)
@@ -86,7 +122,7 @@ var makeFinished = function(){
     makeSection("finished","div-finished")
 
     //store Section
-    var sectionFinished = setSection
+    var sectionFinished = setStn
     
     //append section to page
     pageBody.appendChild(sectionFinished)
@@ -128,5 +164,19 @@ var makeFinished = function(){
 
 }
 
-makeHighScore()
-makeFinished()
+
+var startQtns = function(){
+    //remove content from page
+    var removeCtn = document.querySelector('#content')
+    pageBody.removeChild(removeCtn)
+
+    //append questions to page
+    makeQuestion()
+    var answerBtn = document.querySelector('#btn-answer')
+    var falseBtns = document.querySelectorAll('#false-btn')
+    console.log(answerBtn)
+    console.log(falseBtns)
+
+}
+
+contentBtn.addEventListener('click',startQtns )
