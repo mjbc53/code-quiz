@@ -316,88 +316,88 @@ var startQtns = function(){
     //remove content from page
     removeSection('#content')
 
-
-      //start timer
+    //start timer
     var countdown = setInterval(function(){
-        var
-        if (timeleft > 0)
-        displayTime.textContent = timeleft
-        timeleft--
-        console.log(timeleft)
-
+        if (timeleft > 0){
+            displayTime.textContent = timeleft
+            timeleft--
+            console.log(timeleft)
+        }
+    
         //if timer hits 0 stop timer, end questions and appened next section
         if (timeleft === 0){
            displayTime.textContent = timeleft--
            clearInterval(countdown)
         }
-
+    
         //if all questions have been asked stop timer and append next
         //section
-        if (qtnNumber < questions.length - 1){
-           displayTime.textContent = timeleft--
+        if (qtnNumber === questions.length - 1){
            timeScore = timeleft
            clearInterval(countdown)
         }
    }, 1000)
 
-
-  var check = function(){
-    if (qtnNumber < questions.length-1){
-        removeSection('#question')
-        repeat()
-    }else{
-        removeSection('#question')
-        makeFinishedStn()
-    }
-  }
-        //append questions to page
-        var repeat = function(){
-            makeQuestion()
-            console.log(qtnNumber)
-            qtnNumber++
-
-            //call up id for answer button
-            var answerBtn = document.querySelector('#btn-answer')
-            //call up id for false buttons
-            var falseBtns = document.querySelectorAll('#false-btn')
-
-
-            //event listener for answerBtn
-            answerBtn.addEventListener('click',function(){
-                //call div to append to 
-                var div = document.querySelector("#div-question")
-                // make h3 element to append to bottom of section
-                var h3 = document.createElement('h3')
-                h3.textContent = 'Correct'
-                div.appendChild(h3)
-
-                //remove questions section from page
-            setTimeout(() => {
-                check()
-            }, 2000);
-            })
-
-
-            //loop through node list and add event listeners to each
-            for (var i = 0; i < falseBtns.length; i++){
-                //event listener for on click then display that the answer was wrong
-                falseBtns[i].addEventListener('click', function(){
-                //call div to append to 
-                var div = document.querySelector("#div-question")
-                // make h3 element to append to bottom of section
-                var h3 = document.createElement('h3')
-                h3.textContent = 'Wrong'
-                div.appendChild(h3)
-
-                //remove questions section from page
-            setTimeout(() => {
-                check()
-            }, 2000);
-                })
-            }
+   //function to check if all the questions and been answered
+    var check = function(){
+        if (qtnNumber < questions.length-1){
+            removeSection('#question')
+            repeat()
+        }else{
+            removeSection('#question')
+            finishedPage()
         }
+    }
 
-        repeat()
+
+    var repeat = function(){
+        //append questions to page
+        makeQuestion()
+        // add 1 to question number
+        qtnNumber++
+
+        //call up id for answer button
+        var answerBtn = document.querySelector('#btn-answer')
+        //call up id for false buttons
+        var falseBtns = document.querySelectorAll('#false-btn')
+
+
+        //event listener for answerBtn
+        answerBtn.addEventListener('click',function(){
+            //call div to append to 
+            var div = document.querySelector("#div-question")
+            // make h3 element to append to bottom of section
+            var h3 = document.createElement('h3')
+            h3.textContent = 'Correct'
+            div.appendChild(h3)
+
+             //remove questions section from page
+        setTimeout(() => {
+                check()
+        }, 2000);
+        })
+
+
+        //loop through node list and add event listeners to each
+        for (var i = 0; i < falseBtns.length; i++){
+             //event listener for on click then display that the answer was wrong
+            falseBtns[i].addEventListener('click', function(){
+            //call div to append to 
+            var div = document.querySelector("#div-question")
+            // make h3 element to append to bottom of section
+            var h3 = document.createElement('h3')
+            h3.textContent = 'Wrong'
+            div.appendChild(h3)
+
+            //remove questions section from page
+        setTimeout(() => {
+            check()
+        }, 2000);
+            })
+        }
+    }
+
+    repeat()
 }
         
   
