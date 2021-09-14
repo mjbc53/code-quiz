@@ -11,8 +11,12 @@ console.log(contentStn)
 var contentBtn = document.querySelector('#start-btn')
 
 //time on timer
-var timeStart = 180
-var timeLeft = timeStart
+var timeleft = 160
+//time left on timer stored as score
+var timeScore
+//Timer display
+var displayTime = document.querySelector("#countdown")
+console.log(displayTime)
 
 //empty variable to make sections 
 var setStn 
@@ -23,9 +27,10 @@ intAndScore = []
 //header view score button
 var viewHS = document.querySelector('#btn-scores')
 
-
-
 //questions
+//which question is being used 
+var qtnNumber = 0
+//questions stored in obj stored in a array
 var questions =[
     {
         question: 'which method is used to display content in the console?',
@@ -58,8 +63,10 @@ var questions =[
     },
 ]
 
-//
 
+
+
+//save score to localstorage
 var saveScore = function(){
     localStorage.setItem('highscore', JSON.stringify(intAndScore) )
 }
@@ -81,6 +88,13 @@ var makeSection = function(stnClass,stnId, divId){
     setStn.appendChild(div)
 }
 
+//function that removes sections 
+var removeSection = function(sectionId){
+    var remove = document.querySelector(sectionId)
+    pageBodyMain.removeChild(remove)
+
+}
+
 //function that makes the quiz question screen
 var makeQuestion = function(){
     //function to make this section
@@ -98,13 +112,14 @@ var makeQuestion = function(){
 
     //make h2 element
     var h2 = document.createElement('h2')
-    h2.textContent = "question"
+    h2.textContent = questions[qtnNumber].question
     div.appendChild(h2)
 
+    
     var btnanswer = document.createElement('button')
     btnanswer.setAttribute('id','btn-answer')
     btnanswer.className = 'btn'
-    btnanswer.textContent = "javascript"
+    btnanswer.textContent = questions[qtnNumber].answer
     div.appendChild(btnanswer)
 
     // make other 3 place holder buttons
@@ -112,10 +127,9 @@ var makeQuestion = function(){
         var btn = document.createElement("button")
         btn.setAttribute('id',"false-btn")
         btn.className = 'btn'
-        btn.textContent = qtnHolder[Math.floor(Math.random() * qtnHolder.length)] 
+        btn.textContent = questions[qtnNumber].falseAnswers[i] 
         div.appendChild(btn)
     }
-
 
 }
 
@@ -170,7 +184,7 @@ var makeHighScore = function(){
 
 
 //function that makes the quiz finished screen
-var makeFinished = function(){
+var makeFinishedStn = function(){
     //function to make this section
     makeSection("finished", "finished", "div-finished")
 
@@ -192,7 +206,7 @@ var makeFinished = function(){
 
     //make p element
     var p = document.createElement('p')
-    p.textContent = "Your final score is " + timeLeft
+    p.textContent = "Your final score is " + timeScore
     div.appendChild(p)
 
     //make input and label
@@ -220,7 +234,7 @@ var makeFinished = function(){
 
 var finishedPage = function() {
     //append finished to page
-    makeFinished()
+    makeFinishedStn()
 
     var initialsInput 
     //finished submit button
@@ -248,8 +262,8 @@ var finishedPage = function() {
         saveScore()
 
         //remove finished page
-        var removeFin = document.querySelector("#finished")
-        pageBodyMain.removeChild(removeFin)
+        removeSection('#finished')
+
 
         //append high score page
         highScorePage()
@@ -270,9 +284,9 @@ var highScorePage = function(){
     //event listener for go back button
     goBackBtn.addEventListener('click',function(){
         //remove highscore page and return to default content page
-        var removeHSpage = document.querySelector('#high-score')
-        pageBodyMain.removeChild(removeHSpage)
+        removeSection('#high-score')
 
+        //append content page 
         pageBodyMain.appendChild(contentStn)
     })
 
@@ -285,75 +299,114 @@ var highScorePage = function(){
         var confirm = window.confirm('You will now be return to the starting page')
         if(confirm){
             //remove highscore page and return to default content page
-        var removeHSpage = document.querySelector('#high-score')
-        pageBodyMain.removeChild(removeHSpage)
+            removeSection('#high-score')
 
-        pageBodyMain.appendChild(contentStn)
+            //append content page 
+            pageBodyMain.appendChild(contentStn)
         }
         
     })
 }
 
 
+
+
 var startQtns = function(){
     //debugger
     //remove content from page
-    var removeCtn = document.querySelector('#content')
-    pageBodyMain.removeChild(removeCtn)
+    removeSection('#content')
 
-    //counter for which question its on 
-    var n = 0
-    while(n < 1){
-        //append questions to page
-        makeQuestion()
-        //call up id for answer button
-        var answerBtn = document.querySelector('#btn-answer')
-        //call up id for false buttons
-        var falseBtns = document.querySelectorAll('#false-btn')
-    
-    
-        //event listener for answerBtn
-        answerBtn.addEventListener('click',function(){
-            //call div to append to 
-            var div = document.querySelector("#div-question")
-            // make h3 element to append to bottom of section
-            var h3 = document.createElement('h3')
-            h3.textContent = 'Correct'
-            div.appendChild(h3)
-    
-             //remove questions section from page
-        setTimeout(() => {
-            var removeQtn = document.querySelector('#question')
-            pageBodyMain.removeChild(removeQtn)
-        }, 2000);
-        })
-    
-    
-        //loop through node list and add event listeners to each
-        for (var i = 0; i < falseBtns.length; i++){
-            //event listener for on click then display that the answer was wrong
-            falseBtns[i].addEventListener('click', function(){
-            //call div to append to 
-            var div = document.querySelector("#div-question")
-            // make h3 element to append to bottom of section
-            var h3 = document.createElement('h3')
-            h3.textContent = 'Wrong'
-            div.appendChild(h3)
-    
-             //remove questions section from page
-        setTimeout(() => {
-            var removeQtn = document.querySelector('#question')
-            pageBodyMain.removeChild(removeQtn)
-        }, 2000);
-            })
+
+      //start timer
+    var countdown = setInterval(function(){
+        var
+        if (timeleft > 0)
+        displayTime.textContent = timeleft
+        timeleft--
+        console.log(timeleft)
+
+        //if timer hits 0 stop timer, end questions and appened next section
+        if (timeleft === 0){
+           displayTime.textContent = timeleft--
+           clearInterval(countdown)
         }
 
-    n++
-    }
-   
-    finishedPage()
+        //if all questions have been asked stop timer and append next
+        //section
+        if (qtnNumber < questions.length - 1){
+           displayTime.textContent = timeleft--
+           timeScore = timeleft
+           clearInterval(countdown)
+        }
+   }, 1000)
 
+
+  var check = function(){
+    if (qtnNumber < questions.length-1){
+        removeSection('#question')
+        repeat()
+    }else{
+        removeSection('#question')
+        makeFinishedStn()
+    }
+  }
+        //append questions to page
+        var repeat = function(){
+            makeQuestion()
+            console.log(qtnNumber)
+            qtnNumber++
+
+            //call up id for answer button
+            var answerBtn = document.querySelector('#btn-answer')
+            //call up id for false buttons
+            var falseBtns = document.querySelectorAll('#false-btn')
+
+
+            //event listener for answerBtn
+            answerBtn.addEventListener('click',function(){
+                //call div to append to 
+                var div = document.querySelector("#div-question")
+                // make h3 element to append to bottom of section
+                var h3 = document.createElement('h3')
+                h3.textContent = 'Correct'
+                div.appendChild(h3)
+
+                //remove questions section from page
+            setTimeout(() => {
+                check()
+            }, 2000);
+            })
+
+
+            //loop through node list and add event listeners to each
+            for (var i = 0; i < falseBtns.length; i++){
+                //event listener for on click then display that the answer was wrong
+                falseBtns[i].addEventListener('click', function(){
+                //call div to append to 
+                var div = document.querySelector("#div-question")
+                // make h3 element to append to bottom of section
+                var h3 = document.createElement('h3')
+                h3.textContent = 'Wrong'
+                div.appendChild(h3)
+
+                //remove questions section from page
+            setTimeout(() => {
+                check()
+            }, 2000);
+                })
+            }
+        }
+
+        repeat()
 }
+        
+  
+        
+        
+
+
+
+
 
 //event listener for start of quiz
 contentBtn.addEventListener('click',startQtns )
