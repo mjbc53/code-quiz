@@ -22,6 +22,9 @@ var setStn
 //initials and score
 intAndScore = []
 
+//header view score button
+var viewHS = document.querySelector('#btn-scores')
+
 var saveScore = function(){
     localStorage.setItem('highscore', JSON.stringify(intAndScore) )
 }
@@ -317,4 +320,15 @@ var startQtns = function(){
 
 }
 
+//event listener for start of quiz
 contentBtn.addEventListener('click',startQtns )
+
+
+//event listener for view score
+viewHS.addEventListener('click',function(){
+    //remove content from page
+    var removeCtn = document.querySelector('#content')
+    pageBodyMain.removeChild(removeCtn)
+
+    highScorePage()
+})
