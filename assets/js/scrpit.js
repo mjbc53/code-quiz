@@ -1,3 +1,5 @@
+//Stn stand for section
+
 //store body of page to append to
 var pageBodyMain = document.querySelector('main')
 
@@ -17,6 +19,16 @@ var timeLeft = 0
 //empty variable to make sections 
 var setStn 
 
+//initials and score
+intAndScore = []
+
+var saveScore = function(){
+    localStorage.setItem('highscore', JSON.stringify(intAndScore) )
+}
+
+var clearScore = function(){
+    localStorage.removeItem('highscore')
+}
 
 //function that makes a section with a div
 var makeSection = function(stnClass,stnId, divId){
@@ -171,10 +183,82 @@ var makeFinished = function(){
 var finishedPage = function() {
     //append finished to page
     makeFinished()
+
+    var initialsInput 
+    //finished submit button
+    var btnFinished = document.querySelector("#btn-submit")
+    btnFinished.addEventListener('click', function(){
+        //get initials entered
+        initialsInput = document.querySelector('#initials').value
+        console.log(initialsInput)
+
+        //check to make sure initials were entered
+        if(!initialsInput){
+            alert('please enter initals')
+            return false
+        }
+
+        //store info in obj and push it to array
+        var storeinfo = {
+            initials: initialsInput,
+            score: 0,
+        }
+
+        intAndScore.push(storeinfo)
+
+        //save initials and score to local storage
+        saveScore()
+
+        //remove finished page
+        var removeFin = document.querySelector("#finished")
+        pageBodyMain.removeChild(removeFin)
+
+        //append high score page
+        highScorePage()
+    })
+
+
+}
+
+var highScorePage = function(){
+    //append high score page
+    makeHighScore()
+    // call up id for go back button
+    var goBackBtn = document.querySelector('#btn-go-back')
+
+    //call up id for clear highscore button
+    var clearScoreBtn = document.querySelector('#btn-clear-score')
+
+    //event listener for go back button
+    goBackBtn.addEventListener('click',function(){
+        //remove highscore page and return to default content page
+        var removeHSpage = document.querySelector('#high-score')
+        pageBodyMain.removeChild(removeHSpage)
+
+        pageBodyMain.appendChild(contentStn)
+    })
+
+    //event listener for clear highscore button
+    clearScoreBtn.addEventListener('click',function(){
+        //clear score function
+        clearScore()
+
+        // let the user know they will be return to the front page
+        var confirm = window.confirm('You will now be return to the starting page')
+        if(confirm){
+            //remove highscore page and return to default content page
+        var removeHSpage = document.querySelector('#high-score')
+        pageBodyMain.removeChild(removeHSpage)
+
+        pageBodyMain.appendChild(contentStn)
+        }
+        
+    })
 }
 
 
 var startQtns = function(){
+    //debugger
     //remove content from page
     var removeCtn = document.querySelector('#content')
     pageBodyMain.removeChild(removeCtn)
@@ -225,11 +309,11 @@ var startQtns = function(){
         }, 2000);
             })
         }
-        n++
+
+    n++
     }
    
     finishedPage()
-
 
 }
 
