@@ -3,9 +3,6 @@
 //store body of page to append to
 var pageBodyMain = document.querySelector('main')
 
-//place questions for values of questions
-var qtnHolder = ["javascript","console.log",".document","python","html","css"]
-
 //store content section of page
 var contentStn = document.querySelector('#content')
 console.log(contentStn)
@@ -13,8 +10,9 @@ console.log(contentStn)
 //store button from content section of page
 var contentBtn = document.querySelector('#start-btn')
 
-//time left on timer
-var timeLeft = 0
+//time on timer
+var timeStart = 180
+var timeLeft = timeStart
 
 //empty variable to make sections 
 var setStn 
@@ -24,6 +22,43 @@ intAndScore = []
 
 //header view score button
 var viewHS = document.querySelector('#btn-scores')
+
+
+
+//questions
+var questions =[
+    {
+        question: 'which method is used to display content in the console?',
+        answer: 'console.log',
+        falseAnswers: ["javascrpit","console.dir",'show.log']
+    },
+
+    {
+        question: 'which is used to create a variable?',
+        answer: 'var varName',
+        falseAnswers: ["create","makeVar",'VarName']
+    },
+
+    {
+        question: 'objects in java script are used to store witch data values?',
+        answer: 'key value pairs',
+        falseAnswers: ["value pairs","data pairs",'pairs']
+    },
+
+    {
+        question: 'which one is a string consided a string',
+        answer: '"Hello World"',
+        falseAnswers: ["0","string",'var']
+    },
+
+    {
+        question: 'which is the correct way to call a function',
+        answer: 'function(){}',
+        falseAnswers: ["function()","function[]",'function{}']
+    },
+]
+
+//
 
 var saveScore = function(){
     localStorage.setItem('highscore', JSON.stringify(intAndScore) )
