@@ -22,6 +22,7 @@ var setStn
 //initials and score
 var intAndScore = []
 
+
 //header view score button
 var viewHS = document.querySelector('#btn-scores')
 
@@ -66,12 +67,39 @@ var questions =[
 
 //save score to localstorage
 var saveScore = function(){
-    localStorage.setItem('highscore', JSON.stringify(intAndScore) )
+    console.log(intAndScore)
+        localStorage.setItem('highscore', JSON.stringify(intAndScore) )
+
 }
 
 var clearScore = function(){
     localStorage.removeItem('highscore')
 }
+
+
+ var loadScores = function(){
+    var savedScores = localStorage.getItem('highscore')
+
+    savedScores = JSON.parse(savedScores)
+    console.log(savedScores)
+    
+    var ulHighScore = document.querySelector("#high-score-list")
+
+    var scoreNumber = 1
+
+    if (!savedScores){
+        return
+    }
+
+    for (score of savedScores){
+        
+        var li = document.createElement('li')
+        li.textContent = scoreNumber + "." + score.initials + " - " + score.score
+        ulHighScore.appendChild(li)
+        scoreNumber++
+    }
+}
+
 
 //function that makes a section with a div
 var makeSection = function(stnClass,stnId, divId){
@@ -153,14 +181,13 @@ var makeHighScore = function(){
 
     //make unordered list element
     var ul = document.createElement('ul')
+    ul.setAttribute('id',"high-score-list")
     div.appendChild(ul)
 
     //this need to take from local storage that holds scores and display them in
     //the list item
     //make li item
-    var li = document.createElement('li')
-    li.textContent = "1. " /*initials*/ + " - " /*score*/
-    ul.appendChild(li)
+    
 
     //make btn go back
     var btnGoBack = document.createElement('button')
@@ -178,6 +205,8 @@ var makeHighScore = function(){
 
     console.log(sectionHighScore)
 }
+
+
 
 
 
@@ -237,6 +266,10 @@ var makeFinishedStn = function(){
 var finishedPage = function() {
     //set score
     var score = timeleft
+   
+
+    //stop displaying time left 
+    displayTime.textContent = ""
     //append finished to page
     makeFinishedStn()
 
@@ -260,7 +293,7 @@ var finishedPage = function() {
         //store info in obj and push it to array
         var storeinfo = {
             initials: initialsInput,
-            score: 0,
+            score: timeleft,
         }
 
         intAndScore.push(storeinfo)
@@ -282,6 +315,8 @@ var finishedPage = function() {
 var highScorePage = function(){
     //append high score page
     makeHighScore()
+
+    loadScores()
     // call up id for go back button
     var goBackBtn = document.querySelector('#btn-go-back')
 
@@ -340,6 +375,7 @@ var startQtns = function(){
     //remove content from page
     removeSection('#content')
 
+    timeleft = 128
     //start timer
     var countdown = setInterval(function(){
  intervalLoigc()
@@ -347,10 +383,11 @@ var startQtns = function(){
 
    //function to check if all the questions and been answered
     var check = function(){
-        if (qtnNumber < questions.length-1){
+        if (qtnNumber < questions.length){
             removeSection('#question')
             repeat()
         }else{
+            qtnNumber = 0
             clearInterval(countdown)
             removeSection('#question')
             finishedPage()
@@ -440,3 +477,4 @@ viewHS.addEventListener('click',function(){
 
     highScorePage()
 })
+
