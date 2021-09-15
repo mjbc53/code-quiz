@@ -11,9 +11,7 @@ console.log(contentStn)
 var contentBtn = document.querySelector('#start-btn')
 
 //time on timer
-var timeleft = 160
-//time left on timer stored as score
-var timeScore
+var timeleft = 128
 //Timer display
 var displayTime = document.querySelector("#countdown")
 console.log(displayTime)
@@ -22,7 +20,7 @@ console.log(displayTime)
 var setStn 
 
 //initials and score
-intAndScore = []
+var intAndScore = []
 
 //header view score button
 var viewHS = document.querySelector('#btn-scores')
@@ -206,8 +204,12 @@ var makeFinishedStn = function(){
 
     //make p element
     var p = document.createElement('p')
-    p.textContent = "Your final score is " + timeScore
+    p.textContent = "Your final score is "
     div.appendChild(p)
+
+    var span = document.createElement('span')
+    span.setAttribute('id', 'score-span')
+    p.appendChild(span)
 
     //make input and label
     var label = document.createElement('label')
@@ -233,8 +235,13 @@ var makeFinishedStn = function(){
 }
 
 var finishedPage = function() {
+    //set score
+    var score = timeleft
     //append finished to page
     makeFinishedStn()
+
+    var setScore = document.querySelector('#score-span')
+    setScore.textContent = score
 
     var initialsInput 
     //finished submit button
@@ -242,7 +249,7 @@ var finishedPage = function() {
     btnFinished.addEventListener('click', function(){
         //get initials entered
         initialsInput = document.querySelector('#initials').value
-        console.log(initialsInput)
+
 
         //check to make sure initials were entered
         if(!initialsInput){
@@ -309,6 +316,23 @@ var highScorePage = function(){
 }
 
 
+var intervalLoigc = function(){
+    if (timeleft > 0){
+        displayTime.textContent = timeleft
+        timeleft--
+        console.log(timeleft)
+    }
+
+    //if timer hits 0 stop timer, end questions and appened next section
+    if (timeleft === 0){
+       displayTime.textContent = timeleft--
+       clearInterval(countdown)
+        removeSection('#question')
+        finishedPage()
+    }
+
+
+}
 
 
 var startQtns = function(){
@@ -318,24 +342,7 @@ var startQtns = function(){
 
     //start timer
     var countdown = setInterval(function(){
-        if (timeleft > 0){
-            displayTime.textContent = timeleft
-            timeleft--
-            console.log(timeleft)
-        }
-    
-        //if timer hits 0 stop timer, end questions and appened next section
-        if (timeleft === 0){
-           displayTime.textContent = timeleft--
-           clearInterval(countdown)
-        }
-    
-        //if all questions have been asked stop timer and append next
-        //section
-        if (qtnNumber === questions.length - 1){
-           timeScore = timeleft
-           clearInterval(countdown)
-        }
+ intervalLoigc()
    }, 1000)
 
    //function to check if all the questions and been answered
@@ -344,6 +351,7 @@ var startQtns = function(){
             removeSection('#question')
             repeat()
         }else{
+            clearInterval(countdown)
             removeSection('#question')
             finishedPage()
         }
@@ -371,6 +379,8 @@ var startQtns = function(){
             h3.textContent = 'Correct'
             div.appendChild(h3)
 
+            
+
              //remove questions section from page
         setTimeout(() => {
                 check()
@@ -380,6 +390,7 @@ var startQtns = function(){
 
         //loop through node list and add event listeners to each
         for (var i = 0; i < falseBtns.length; i++){
+            var answerWrong = "wrong"
              //event listener for on click then display that the answer was wrong
             falseBtns[i].addEventListener('click', function(){
             //call div to append to 
@@ -389,10 +400,19 @@ var startQtns = function(){
             h3.textContent = 'Wrong'
             div.appendChild(h3)
 
+            if (answerWrong === "wrong"){
+                clearInterval(countdown)
+                timeleft = timeleft - 10
+              countdown = setInterval(function(){
+                    intervalLoigc()
+                      }, 1000)
+            }
+
+
             //remove questions section from page
         setTimeout(() => {
             check()
-        }, 2000);
+        }, 1500);
             })
         }
     }
