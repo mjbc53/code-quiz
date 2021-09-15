@@ -31,7 +31,7 @@ body{
     margin-bottom: 5px;
     font-size: 25px;
 }
-
+/* button that starts the quiz */
 .start-btn{
     font-size: 22px;
     background: #9932CC;
@@ -42,7 +42,7 @@ body{
     border-color: #9932CC;
     text-align: center;
 }
-
+/* button in finished section that will submit the intials given */
 .btn-submit{
     font-size: 20px;
     background: #9932CC;
@@ -54,6 +54,7 @@ body{
     margin-left:5px;
 }
 
+/* button that will take you back to the start of the quiz */
 .btn-go-back{
     font-size: 20px;
     background: #9932CC;
@@ -64,6 +65,7 @@ body{
     padding: 0px 10px 0px 10px ;
 }
 
+/* button that clears the score */
 .btn-clear-score{
     font-size: 20px;
     background: #9932CC;
@@ -94,6 +96,7 @@ header button, input[type="submit"], input[type="reset"]{
     outline: inherit;
 }
 
+/* view high scores button */
 .header button{
     color: #DC143C;
 }
