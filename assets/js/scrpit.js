@@ -448,11 +448,11 @@ var repeatMakingQtns = function(){
 
 
     //loop through node list and add event listeners to each
-    for (var i = 0; i < falseBtns.length; i++){
+    for (btn of falseBtns){
         //variable to hold a value to compare to
         var answerWrong = "wrong"
          //event listener for on click then display that the answer was wrong
-        falseBtns[i].addEventListener('click', function(){
+        btn.addEventListener('click', function(){
         //call div to append to 
         var div = document.querySelector("#div-question")
         // make h3 element to append to bottom of section
