@@ -1,33 +1,35 @@
-//Stn stand for section
+//extra information
+//stn stand for section, int stands for initial, btn stands for button
+//qtn stands for question or questions
+
+
 
 //store body of page to append to
 var pageBodyMain = document.querySelector('main')
 
-//store content section of page
+//store content section of page to be used later to reappend it back to the page
 var contentStn = document.querySelector('#content')
-console.log(contentStn)
 
 //store button from content section of page
 var contentBtn = document.querySelector('#start-btn')
 
-//time on timer
+//time that timer will start with
 var timeleft = 128
+
 //Timer display
 var displayTime = document.querySelector("#countdown")
-console.log(displayTime)
 
 //empty variable to make sections 
 var setStn 
 
-//initials and score
+//initials and score stores objects that are stored and reused later
 var intAndScore = []
 
-
-//header view score button
+//header view score button id call
 var viewHS = document.querySelector('#btn-scores')
 
-//questions
-//which question is being used 
+
+//which question is being used by number used in start quiz event listener
 var qtnNumber = 0
 //questions stored in obj stored in a array
 var questions =[
@@ -67,42 +69,50 @@ var questions =[
 
 //save score to localstorage
 var saveScore = function(){
-    console.log(intAndScore)
-        localStorage.setItem('highscore', JSON.stringify(intAndScore) )
+    //setitems in intAndScore to the localStorage key of highscore
+    localStorage.setItem('highscore', JSON.stringify(intAndScore) )
 
 }
 
+//function that clears the localStorage hence forth clearing the highscores
 var clearScore = function(){
+    //removes highscores from localstorage
     localStorage.removeItem('highscore')
 }
 
-
- var loadScores = function(){
+//function that loads the scores to the highscore page
+var loadScores = function(){
+    //get items from local storage
     var savedScores = localStorage.getItem('highscore')
 
+    //convert them from a string back to an array
     savedScores = JSON.parse(savedScores)
-    console.log(savedScores)
-    
+
+    //find id to append them to 
     var ulHighScore = document.querySelector("#high-score-list")
 
+    //number associated with score
     var scoreNumber = 1
 
+    // if method to check if 'highscore' is null
     if (!savedScores){
         return
     }
 
+    //loop to append each score stored in localStorage
     for (score of savedScores){
         
         var li = document.createElement('li')
         li.textContent = scoreNumber + "." + score.initials + " - " + score.score
         ulHighScore.appendChild(li)
+
         scoreNumber++
     }
 }
 
 
 //function that makes a section with a div
-var makeSection = function(stnClass,stnId, divId){
+var makeStn = function(stnClass,stnId, divId){
     //make section element
     setStn = document.createElement('section')
     setStn.className = stnClass
@@ -115,16 +125,17 @@ var makeSection = function(stnClass,stnId, divId){
 }
 
 //function that removes sections 
-var removeSection = function(sectionId){
+var removeStn = function(sectionId){
     var remove = document.querySelector(sectionId)
     pageBodyMain.removeChild(remove)
 
 }
 
-//function that makes the quiz question screen
-var makeQuestion = function(){
+
+//function that makes the quiz question section
+var makeQuestionStn = function(){
     //function to make this section
-    makeSection("question","question","div-question")
+    makeStn("question","question","div-question")
 
     //store section
     var sectionQuestion = setStn
@@ -159,10 +170,10 @@ var makeQuestion = function(){
 
 }
 
-//function that makes the quiz high score screen
-var makeHighScore = function(){
+//function that makes the quiz high score section
+var makeHighScoreStn = function(){
     //function to make this section
-    makeSection("high-score","high-score","div-high-score")
+    makeStn("high-score","high-score","div-high-score")
 
     //store Section
     var sectionHighScore = setStn
@@ -210,10 +221,10 @@ var makeHighScore = function(){
 
 
 
-//function that makes the quiz finished screen
+//function that makes the quiz finished section
 var makeFinishedStn = function(){
     //function to make this section
-    makeSection("finished", "finished", "div-finished")
+    makeStn("finished", "finished", "div-finished")
 
     //store Section
     var sectionFinished = setStn
@@ -263,24 +274,28 @@ var makeFinishedStn = function(){
 
 }
 
+//function that will be called once quiz has finished or time as run out 
 var finishedPage = function() {
     //set score
     var score = timeleft
    
-
     //stop displaying time left 
     displayTime.textContent = ""
     //append finished to page
     makeFinishedStn()
 
-    var setScore = document.querySelector('#score-span')
-    setScore.textContent = score
+    //use score variable and add what the ending score was to the page
+    var setScoreSpan = document.querySelector('#score-span')
+    setScoreSpan.textContent = score
 
+    //call variable out side of the event listener so it can be used again after
+    //the event listener to store input
     var initialsInput 
+
     //finished submit button
     var btnFinished = document.querySelector("#btn-submit")
     btnFinished.addEventListener('click', function(){
-        //get initials entered
+    //get initials entered
         initialsInput = document.querySelector('#initials').value
 
 
@@ -302,8 +317,7 @@ var finishedPage = function() {
         saveScore()
 
         //remove finished page
-        removeSection('#finished')
-
+        removeStn('#finished')
 
         //append high score page
         highScorePage()
@@ -313,10 +327,13 @@ var finishedPage = function() {
 }
 
 var highScorePage = function(){
-    //append high score page
-    makeHighScore()
 
+    //append high score page
+    makeHighScoreStn()
+
+    //load the scores from the local storage
     loadScores()
+
     // call up id for go back button
     var goBackBtn = document.querySelector('#btn-go-back')
 
@@ -326,7 +343,7 @@ var highScorePage = function(){
     //event listener for go back button
     goBackBtn.addEventListener('click',function(){
         //remove highscore page and return to default content page
-        removeSection('#high-score')
+        removeStn('#high-score')
 
         //append content page 
         pageBodyMain.appendChild(contentStn)
@@ -341,7 +358,7 @@ var highScorePage = function(){
         var confirm = window.confirm('You will now be return to the starting page')
         if(confirm){
             //remove highscore page and return to default content page
-            removeSection('#high-score')
+            removeStn('#high-score')
 
             //append content page 
             pageBodyMain.appendChild(contentStn)
@@ -350,8 +367,9 @@ var highScorePage = function(){
     })
 }
 
-
-var intervalLoigc = function(){
+//fuction that holds the timer Interval logic
+var timerIntervalLoigc = function(){
+    //if timer is great than 0 countdown by one second
     if (timeleft > 0){
         displayTime.textContent = timeleft
         timeleft--
@@ -362,7 +380,7 @@ var intervalLoigc = function(){
     if (timeleft === 0){
        displayTime.textContent = timeleft--
        clearInterval(countdown)
-        removeSection('#question')
+        removeStn('#question')
         finishedPage()
     }
 
@@ -370,103 +388,104 @@ var intervalLoigc = function(){
 }
 
 
+
+
 var startQtns = function(){
-    //debugger
     //remove content from page
-    removeSection('#content')
+    removeStn('#content')
 
     timeleft = 128
     //start timer
     var countdown = setInterval(function(){
- intervalLoigc()
+ timerIntervalLoigc()
    }, 1000)
 
+
    //function to check if all the questions and been answered
-    var check = function(){
-        if (qtnNumber < questions.length){
-            removeSection('#question')
-            repeat()
-        }else{
-            qtnNumber = 0
+   //function has to be called in this function to clearinerval
+var checkQtnLeft = function(){
+    if (qtnNumber < questions.length){
+        removeStn('#question')
+        repeatMakingQtns()
+    }else{
+        qtnNumber = 0
+        clearInterval(countdown)
+        removeStn('#question')
+        finishedPage()
+    }
+}
+
+//function that will continue to index through the questions and make them until
+//the checkQtnLeft has confirmed otherwise
+//function has to be called in this function to clear interval
+var repeatMakingQtns = function(){
+    //append questions to page
+    makeQuestionStn()
+    // add 1 to question number which will be used as and index
+    qtnNumber++
+
+    //call up id for answer button
+    var answerBtn = document.querySelector('#btn-answer')
+    //call up id for false buttons
+    var falseBtns = document.querySelectorAll('#false-btn')
+
+
+    //event listener for answerBtn
+    answerBtn.addEventListener('click',function(){
+
+        //call div to append to 
+        var div = document.querySelector("#div-question")
+
+        // make h3 element to append to bottom of section
+        var h3 = document.createElement('h3')
+        h3.textContent = 'Correct'
+        div.appendChild(h3)
+        //set timeout for 1 second then call checkQtnLeft function
+    setTimeout(() => {
+            checkQtnLeft()
+    }, 1000);
+    })
+
+
+    //loop through node list and add event listeners to each
+    for (var i = 0; i < falseBtns.length; i++){
+        //variable to hold a value to compare to
+        var answerWrong = "wrong"
+         //event listener for on click then display that the answer was wrong
+        falseBtns[i].addEventListener('click', function(){
+        //call div to append to 
+        var div = document.querySelector("#div-question")
+        // make h3 element to append to bottom of section
+        var h3 = document.createElement('h3')
+        h3.textContent = 'Wrong'
+        div.appendChild(h3)
+
+        //if method to check if the answer was wrong which it should be because
+        //of the call out above
+        if (answerWrong === "wrong"){
+            //clears the countdown interval
             clearInterval(countdown)
-            removeSection('#question')
-            finishedPage()
+            //subtract 10 seconds from time left
+            timeleft = timeleft - 10
+            //restart interval
+          countdown = setInterval(function(){
+                timerIntervalLoigc()
+                  }, 1000)
         }
-    }
 
-
-    var repeat = function(){
-        //append questions to page
-        makeQuestion()
-        // add 1 to question number
-        qtnNumber++
-
-        //call up id for answer button
-        var answerBtn = document.querySelector('#btn-answer')
-        //call up id for false buttons
-        var falseBtns = document.querySelectorAll('#false-btn')
-
-
-        //event listener for answerBtn
-        answerBtn.addEventListener('click',function(){
-            //call div to append to 
-            var div = document.querySelector("#div-question")
-            // make h3 element to append to bottom of section
-            var h3 = document.createElement('h3')
-            h3.textContent = 'Correct'
-            div.appendChild(h3)
-
-            
-
-             //remove questions section from page
-        setTimeout(() => {
-                check()
-        }, 2000);
+    //set timeout for 1 second then call checkQtnLeft function
+    setTimeout(() => {
+        checkQtnLeft()
+    }, 1000);
         })
-
-
-        //loop through node list and add event listeners to each
-        for (var i = 0; i < falseBtns.length; i++){
-            var answerWrong = "wrong"
-             //event listener for on click then display that the answer was wrong
-            falseBtns[i].addEventListener('click', function(){
-            //call div to append to 
-            var div = document.querySelector("#div-question")
-            // make h3 element to append to bottom of section
-            var h3 = document.createElement('h3')
-            h3.textContent = 'Wrong'
-            div.appendChild(h3)
-
-            if (answerWrong === "wrong"){
-                clearInterval(countdown)
-                timeleft = timeleft - 10
-              countdown = setInterval(function(){
-                    intervalLoigc()
-                      }, 1000)
-            }
-
-
-            //remove questions section from page
-        setTimeout(() => {
-            check()
-        }, 1500);
-            })
-        }
     }
-
-    repeat()
+}
+    //call function repeatMakingQtns
+    repeatMakingQtns()
 }
         
-  
-        
-        
-
-
-
-
-
 //event listener for start of quiz
-contentBtn.addEventListener('click',startQtns )
+contentBtn.addEventListener('click', startQtns )
 
 
 //event listener for view score
@@ -475,6 +494,7 @@ viewHS.addEventListener('click',function(){
     var removeCtn = document.querySelector('#content')
     pageBodyMain.removeChild(removeCtn)
 
+    //function call to make high score page
     highScorePage()
 })
 
